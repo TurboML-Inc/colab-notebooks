@@ -14,8 +14,9 @@ from turboml.common.protos import (
 )
 
 
-def get_classes(path: str) -> list:
-    with open(path) as f:
+def get_classes() -> list:
+    import urllib.request
+    with urllib.request.urlopen("https://raw.githubusercontent.com/TurboML-Inc/colab-notebooks/refs/heads/main/data/imagenet_labels.txt") as f:
         classes = [line.strip() for line in f.readlines()]
     return classes
 
@@ -23,7 +24,7 @@ def get_classes(path: str) -> list:
 class MLService(ml_service_pb2_grpc.MLServiceServicer):
     def __init__(self) -> None:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.classes = get_classes("data/imagenet_labels.txt")
+        self.classes = get_classes()
         self.model = models.resnet18(weights=ResNet18_Weights.IMAGENET1K_V1).to(
             self.device
         )

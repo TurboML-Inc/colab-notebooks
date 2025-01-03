@@ -1,19 +1,18 @@
-from typing import Callable, Any
+from typing import Any
 import pandas as pd
 import time
 
 
 def do_retry(
-    func: Callable,
-    *args,
-    return_on: Callable[Any, bool],
+    operation,
+    return_on: lambda result: True,
     retry_count=3,
     sleep_seconds=3,
 ) -> Any:
     attempt = 1
     while attempt <= retry_count:
         print(f"## Attempt {attempt} of {retry_count}.")
-        result = func(*args)
+        result = operation()
         if return_on(result):
             print(f"## Finished in {attempt} attempt.")
             return result
