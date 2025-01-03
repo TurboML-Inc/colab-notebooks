@@ -16,7 +16,10 @@ from turboml.common.protos import (
 
 def get_classes() -> list:
     import urllib.request
-    with urllib.request.urlopen("https://raw.githubusercontent.com/TurboML-Inc/colab-notebooks/refs/heads/main/data/imagenet_labels.txt") as f:
+
+    with urllib.request.urlopen(
+        "https://raw.githubusercontent.com/TurboML-Inc/colab-notebooks/refs/heads/main/data/imagenet_labels.txt"
+    ) as f:
         classes = [line.strip() for line in f.readlines()]
     return classes
 
